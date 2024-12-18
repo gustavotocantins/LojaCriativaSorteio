@@ -2,13 +2,10 @@ const express = require('express');
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 80;
+const port = 3001; // Defina a porta como 3001
 
 const cors = require('cors');
 const mysql = require('mysql2/promise'); // Usando versão com promises para async/await
-
-const app = express();
-const port = 3001;
 
 // Middleware
 app.use(cors());
@@ -21,6 +18,7 @@ const pool = mysql.createPool({
   password: 'GustavoTocantins360#',
   database: 'u129712343_Teste',
 });
+
 // Serve arquivos estáticos na pasta public
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -28,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
+
 // Rota para cadastro/atualização
 app.post('/pessoas', async (req, res) => {
   const { numeroCompra, nome, cpf, telefone } = req.body;
@@ -92,6 +91,7 @@ app.get('/pessoas', async (req, res) => {
     res.status(500).json({ message: 'Erro ao listar pessoas.' });
   }
 });
+
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);
 });
