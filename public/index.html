@@ -69,56 +69,85 @@
     </div>
 
     <script>
-        const cadastroForm = document.getElementById('cadastroForm');
-        const consultaForm = document.getElementById('consultaForm');
-        const output = document.getElementById('output');
+    const cadastroForm = document.getElementById('cadastroForm');
+    const consultaForm = document.getElementById('consultaForm');
+    const output = document.getElementById('output');
+    const listaPessoas = document.getElementById('lista');
 
-        const pessoas = [];
+    // Função para atualizar a lista de pessoas
+    async function atualizarLista() {
+        listaPessoas.innerHTML = '<li>Carregando...</li>';
+        try {
+            const response = await fetch('http://localhost:3001/pessoas');
+            if (!response.ok) throw new Error('Erro ao carregar lista.');
+            const pessoas = await response.json();
 
-        cadastroForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const numeroCompra = document.getElementById('numeroCompra').value;
-            const nome = document.getElementById('nome').value;
-            const cpf = document.getElementById('cpf').value;
-            const telefone = document.getElementById('telefone').value;
-
-            let pessoa = pessoas.find(pessoa => pessoa.cpf === cpf);
-
-            if (pessoa) {
-                if (numeroCompra) {
-                    pessoa.numeroCompra.push(numeroCompra);
-                }
-                pessoa.nome = nome;
-                pessoa.telefone = telefone;
-                output.textContent = 'Cadastro atualizado com sucesso!';
-            } else {
-                pessoas.push({ numeroCompra: numeroCompra ? [numeroCompra] : [], nome, cpf, telefone });
-                output.textContent = 'Cadastro realizado com sucesso!';
+            listaPessoas.innerHTML = '';
+            if (pessoas.length === 0) {
+                listaPessoas.innerHTML = '<li>Nenhum cadastro encontrado.</li>';
+                return;
             }
+
+            pessoas.forEach(pessoa => {
+                const item = document.createElement('li');
+                item.textContent = `Nome: ${pessoa.nome}, CPF: ${pessoa.cpf}, Telefone: ${pessoa.telefone}, Compras: ${pessoa.numeroCompra}`;
+                listaPessoas.appendChild(item);
+            });
+        } catch (error) {
+            console.error(error);
+            listaPessoas.innerHTML = '<li>Erro ao carregar lista de pessoas.</li>';
+        }
+    }
+
+    cadastroForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const numeroCompra = document.getElementById('numeroCompra').value;
+        const nome = document.getElementById('nome').value;
+        const cpf = document.getElementById('cpf').value;
+        const telefone = document.getElementById('telefone').value;
+
+        try {
+            const response = await fetch('http://localhost:3001/pessoas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ numeroCompra, nome, cpf, telefone }),
+            });
+
+            const result = await response.json();
+            output.textContent = result.message;
             cadastroForm.reset();
-        });
+            atualizarLista();
+        } catch (error) {
+            console.error(error);
+            output.textContent = 'Erro ao processar o cadastro.';
+        }
+    });
 
-        consultaForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const cpfConsulta = document.getElementById('cpfConsulta').value;
-            const pessoa = pessoas.find(pessoa => pessoa.cpf === cpfConsulta);
+    consultaForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-            if (pessoa) {
-                document.getElementById('nome').value = pessoa.nome;
-                document.getElementById('cpf').value = pessoa.cpf;
-                document.getElementById('telefone').value = pessoa.telefone;
-                document.getElementById('numeroCompra').focus();
-                output.textContent = `CPF encontrado! Adicione um novo número de compra ou atualize as informações.`;
-            } else {
-                document.getElementById('cpf').value = cpfConsulta;
-                document.getElementById('nome').focus();
-                output.textContent = 'CPF não encontrado. Complete o cadastro.';
-            }
+        const cpfConsulta = document.getElementById('cpfConsulta').value;
+        try {
+            const response = await fetch(`http://localhost:3001/pessoas/${cpfConsulta}`);
+            if (!response.ok) throw new Error('CPF não encontrado.');
 
-            consultaForm.reset();
-        });
-    </script>
+            const pessoa = await response.json();
+            document.getElementById('nome').value = pessoa.nome;
+            document.getElementById('cpf').value = pessoa.cpf;
+            document.getElementById('telefone').value = pessoa.telefone;
+            output.textContent = 'CPF encontrado! Adicione um novo número de compra ou atualize as informações.';
+        } catch (error) {
+            console.error(error);
+            output.textContent = 'CPF não encontrado. Complete o cadastro.';
+        }
+
+        consultaForm.reset();
+    });
+
+    // Atualiza a lista ao carregar a página
+    atualizarLista();
+</script>
+
 </body>
 </html>
