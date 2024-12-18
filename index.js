@@ -20,8 +20,6 @@ const pool = mysql.createPool({
   user: 'u129712343_guga',
   password: 'GustavoTocantins360#',
   database: 'u129712343_Teste',
-  waitForConnections: true,
-  connectionLimit: 10,
 });
 // Serve arquivos estáticos na pasta public
 app.use(express.static(path.join(__dirname, 'public')));
