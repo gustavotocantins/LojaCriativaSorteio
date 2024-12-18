@@ -22,8 +22,6 @@ const pool = mysql.createPool({
   database: 'u129712343_Teste',
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0,
-  connectTimeout: 10000,
 });
 // Serve arquivos estáticos na pasta public
 app.use(express.static(path.join(__dirname, 'public')));
