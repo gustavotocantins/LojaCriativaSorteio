@@ -81,7 +81,7 @@
     async function atualizarLista() {
         listaPessoas.innerHTML = '<li>Carregando...</li>';
         try {
-            const response = await fetch('https://loja-criativa-sorteio.vercel.app:3001/pessoas');
+            const response = await fetch('http://145.223.94.114:3100/pessoas');
             if (!response.ok) throw new Error('Erro ao carregar lista.');
             const pessoas = await response.json();
 
@@ -111,7 +111,7 @@
         const telefone = document.getElementById('telefone').value;
 
         try {
-            const response = await fetch('https://loja-criativa-sorteio.vercel.app:3001/pessoas', {
+            const response = await fetch('http://145.223.94.114:3100/pessoas', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ numeroCompra, nome, cpf, telefone }),
@@ -132,7 +132,7 @@
 
         const cpfConsulta = document.getElementById('cpfConsulta').value;
         try {
-            const response = await fetch(`https://loja-criativa-sorteio.vercel.app:3001/pessoas/${cpfConsulta}`);
+            const response = await fetch(`http://145.223.94.114:3100/pessoas/${cpfConsulta}`);
             if (!response.ok) throw new Error('CPF não encontrado.');
 
             const pessoa = await response.json();
