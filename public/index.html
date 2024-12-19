@@ -116,7 +116,7 @@ font-size:17px;
     async function atualizarLista() {
         listaPessoas.innerHTML = '<li>Carregando...</li>';
         try {
-            const response = await fetch('https://serveraquagas.shop:3101/pessoas');
+            const response = await fetch('https://serveraquagas.shop:3102/pessoas');
             if (!response.ok) throw new Error('Erro ao carregar lista.');
             const pessoas = await response.json();
 
@@ -166,7 +166,7 @@ font-size:17px;
         }
 
         try {
-            const response = await fetch('https://serveraquagas.shop:3101/pessoas', {
+            const response = await fetch('https://serveraquagas.shop:3102/pessoas', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ numeroCompra, nome, cpf, telefone }),
@@ -187,7 +187,7 @@ font-size:17px;
 
         const cpfConsulta = document.getElementById('cpfConsulta').value;
         try {
-            const response = await fetch(`https://serveraquagas.shop:3101/pessoas/${cpfConsulta}`);
+            const response = await fetch(`https://serveraquagas.shop:3102/pessoas/${cpfConsulta}`);
             if (!response.ok) throw new Error('CPF não encontrado.');
 
             const pessoa = await response.json();
