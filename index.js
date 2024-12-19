@@ -1,11 +1,12 @@
 const express = require('express');
 const path = require('path');
-
-const app = express();
-const port = 3001; // Defina a porta como 3001
-
 const cors = require('cors');
 const mysql = require('mysql2/promise'); // Usando versão com promises para async/await
+
+const app = express();
+
+// Usando a porta configurada no ambiente ou 3001 como padrão
+const port = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
@@ -84,7 +85,11 @@ app.get('/pessoas', async (req, res) => {
     const connection = await pool.getConnection();
     const [rows] = await connection.query('SELECT * FROM pessoas');
 
-    res.json(rows);
+    if (rows.length > 0) {
+      res.json(rows);
+    } else {
+      res.status(404).json({ message: 'Nenhuma pessoa encontrada.' });
+    }
     connection.release();
   } catch (error) {
     console.error(error);
@@ -92,6 +97,12 @@ app.get('/pessoas', async (req, res) => {
   }
 });
 
+// Rota para tratamento de erros 404 (caso a rota não exista)
+app.use((req, res) => {
+  res.status(404).json({ message: 'Rota não encontrada.' });
+});
+
+// Inicia o servidor
 app.listen(port, () => {
     console.log(`Servidor rodando na porta ${port}`);
 });
