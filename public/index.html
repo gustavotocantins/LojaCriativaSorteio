@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Pessoas</title>
@@ -31,6 +29,7 @@
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 5px;
+font-size:17px;
         }
         button {
             background-color: #007BFF;
@@ -51,24 +50,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>Cadastro de Pessoas</h1>
-        <form id="cadastroForm">
-            <input type="text" id="numeroCompra" placeholder="Número da Compra">
-            <input type="text" id="nome" placeholder="Nome" required>
-            <input type="text" id="cpf" placeholder="CPF" required>
-            <input type="text" id="telefone" placeholder="Telefone" required>
-            <button type="submit">Cadastrar/Atualizar</button>
-        </form>
-
-        <form id="consultaForm">
-            <input type="text" id="cpfConsulta" placeholder="Digite o CPF para consultar" required>
+        <h1>Sorteio Criativa</h1>
+    <form id="consultaForm">
+            <input type="text" id="cpfConsulta" placeholder="Digite o CPF para consultar" required="">
             <button type="submit">Consultar</button>
         </form>
 
-        <div class="output" id="output"></div>
+        <form id="cadastroForm">
+            <input type="text" id="numeroCompra" placeholder="Número da Compra">
+            <input type="text" id="nome" placeholder="Nome" required="">
+            <input type="text" id="cpf" placeholder="CPF" required="">
+            <input type="text" id="telefone" placeholder="Telefone" required="">
+            <button type="submit">Cadastrar/Atualizar</button>
+        </form>
+
+        
+        <div class="output" id="output">CPF encontrado! Adicione um novo número de compra ou atualize as informações.</div>
 
         <!-- Lista de Pessoas -->
-        <ul id="lista"></ul>
+        <ul id="lista"><li>Nome: Gustavo, CPF: 12345678901, Telefone: 999999999, Compras: 12345</li><li>Nome: Gustavo Tocantins, CPF: 12345, Telefone: 919465858585, Compras: 59484545</li><li>Nome: Naruto, CPF: 24069024069, Telefone: 91912345222, Compras: 33333,00000,232212,</li><li>Nome: Gustavo Tocantins, CPF: 04588776207, Telefone: 91954455555, Compras: 59484545</li><li>Nome: d, CPF: 33333333333, Telefone: 33333333333, Compras: d</li></ul>
     </div>
 
     <script>
@@ -208,5 +208,6 @@
 </script>
 
 
-</body>
-</html>
+
+
+<script async="" data-explicit-opt-in="true" data-cookie-opt-in="true" src="https://vercel.live/_next-live/feedback/feedback.js"></script><vercel-live-feedback style="position: absolute; top: 0px; left: 0px; z-index: 2147483647;"></vercel-live-feedback></body></html>
