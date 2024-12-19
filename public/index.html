@@ -77,6 +77,23 @@
     const output = document.getElementById('output');
     const listaPessoas = document.getElementById('lista');
 
+    // Função para formatar o CPF
+    function formatarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); // Adiciona ponto após 3 dígitos
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); // Adiciona ponto após 6 dígitos
+        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Adiciona hífen
+        return cpf;
+    }
+
+    // Função para formatar o telefone
+    function formatarTelefone(telefone) {
+        telefone = telefone.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        telefone = telefone.replace(/^(\d{2})(\d)/, '($1)$2'); // Adiciona parênteses ao DDD
+        telefone = telefone.replace(/(\d{5})(\d)/, '$1-$2'); // Adiciona hífen após 5 dígitos
+        return telefone;
+    }
+
     // Função para validar o CPF (11 dígitos)
     function validarCPF(cpf) {
         const regex = /^\d{11}$/;
@@ -114,13 +131,22 @@
         }
     }
 
+    // Evento para formatar CPF e Telefone à medida que o usuário digita
+    document.getElementById('cpf').addEventListener('input', (e) => {
+        e.target.value = formatarCPF(e.target.value);
+    });
+
+    document.getElementById('telefone').addEventListener('input', (e) => {
+        e.target.value = formatarTelefone(e.target.value);
+    });
+
     cadastroForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const numeroCompra = document.getElementById('numeroCompra').value;
         const nome = document.getElementById('nome').value;
-        const cpf = document.getElementById('cpf').value;
-        const telefone = document.getElementById('telefone').value;
+        const cpf = document.getElementById('cpf').value.replace(/\D/g, ''); // Remove a formatação do CPF
+        const telefone = document.getElementById('telefone').value.replace(/\D/g, ''); // Remove a formatação do telefone
 
         // Validar CPF e telefone
         if (!validarCPF(cpf)) {
@@ -160,8 +186,8 @@
 
             const pessoa = await response.json();
             document.getElementById('nome').value = pessoa.nome;
-            document.getElementById('cpf').value = pessoa.cpf;
-            document.getElementById('telefone').value = pessoa.telefone;
+            document.getElementById('cpf').value = formatarCPF(pessoa.cpf); // Formatar o CPF
+            document.getElementById('telefone').value = formatarTelefone(pessoa.telefone); // Formatar o telefone
             output.textContent = 'CPF encontrado! Adicione um novo número de compra ou atualize as informações.';
         } catch (error) {
             console.error(error);
@@ -174,6 +200,7 @@
     // Atualiza a lista ao carregar a página
     atualizarLista();
 </script>
+
 
 </body>
 </html>
