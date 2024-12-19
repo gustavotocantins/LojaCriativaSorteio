@@ -80,6 +80,9 @@
     // Função para formatar o CPF
     function formatarCPF(cpf) {
         cpf = cpf.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        if (cpf.length > 11) {
+        cpf = cpf.slice(0, 11); // Limita a 11 dígitos
+        }
         cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); // Adiciona ponto após 3 dígitos
         cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2'); // Adiciona ponto após 6 dígitos
         cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2'); // Adiciona hífen
@@ -89,8 +92,11 @@
     // Função para formatar o telefone
     function formatarTelefone(telefone) {
         telefone = telefone.replace(/\D/g, ''); // Remove todos os caracteres não numéricos
+        if (telefone.length > 11) {
+        telefone = telefone.slice(0, 11); // Limita a 11 dígitos
+        }
         telefone = telefone.replace(/^(\d{2})(\d)/, '($1)$2'); // Adiciona parênteses ao DDD
-        telefone = telefone.replace(/(\d{5})(\d)/, '$1-$2'); // Adiciona hífen após 5 dígitos
+        telefone = telefone.replace(/(\d{5})(\d)/, '$1-$2');
         return telefone;
     }
 
