@@ -182,26 +182,28 @@ font-size:17px;
         }
     });
 
-    consultaForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
+   consultaForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
 
-        const cpfConsulta = document.getElementById('cpfConsulta').value;
-        try {
-            const response = await fetch(`https://serveraquagas.shop:3102/pessoas/${cpfConsulta}`);
-            if (!response.ok) throw new Error('CPF não encontrado.');
+    const cpfConsulta = document.getElementById('cpfConsulta').value.replace(/\D/g, ''); // Remove a formatação
+    try {
+        const response = await fetch(`https://serveraquagas.shop:3102/pessoas/${cpfConsulta}`);
+        if (!response.ok) throw new Error('CPF não encontrado.');
 
-            const pessoa = await response.json();
-            document.getElementById('nome').value = pessoa.nome;
-            document.getElementById('cpf').value = formatarCPF(pessoa.cpf); // Formatar o CPF
-            document.getElementById('telefone').value = formatarTelefone(pessoa.telefone); // Formatar o telefone
-            output.textContent = 'CPF encontrado! Adicione um novo número de compra ou atualize as informações.';
-        } catch (error) {
-            console.error(error);
-            output.textContent = 'CPF não encontrado. Complete o cadastro.';
-        }
+        const pessoa = await response.json();
+        document.getElementById('nome').value = pessoa.nome;
+        document.getElementById('cpf').value = formatarCPF(pessoa.cpf); // Formatar o CPF
+        document.getElementById('telefone').value = formatarTelefone(pessoa.telefone); // Formatar o telefone
+        output.textContent = 'CPF encontrado! Adicione um novo número de compra ou atualize as informações.';
+    } catch (error) {
+        console.error(error);
+        output.textContent = 'CPF não encontrado. Complete o cadastro.';
+        // Preencher o campo de CPF no formulário de cadastro
+        document.getElementById('cpf').value = formatarCPF(cpfConsulta); // Formatar o CPF
+    }
 
-        consultaForm.reset();
-    });
+    consultaForm.reset();
+});
 
     // Atualiza a lista ao carregar a página
     atualizarLista();
