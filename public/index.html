@@ -102,7 +102,7 @@
 
     // Função para validar o telefone (formato (xx)xxxxx-xxxx)
     function validarTelefone(telefone) {
-        const regex = /^\(\d{2}\)\d{5}-\d{4}$/;
+        const regex = /^\d{11}$/;
         return regex.test(telefone);
     }
 
